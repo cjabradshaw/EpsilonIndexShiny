@@ -17,8 +17,8 @@ library(googleAuthR)
 options(googleAuthR.scopes.selected = c("https://www.googleapis.com/auth/userinfo.email",
                                         "https://www.googleapis.com/auth/userinfo.profile"
                                         ))
-options("googleAuthR.webapp.client_id" = "500611116199-1let7ftg4hgni9ccv6b2297ovv1ij48i.apps.googleusercontent.com")
-options("googleAuthR.webapp.client_secret" = "h-U5SScXB1xKNJWOqMDaKMWL")
+options("googleAuthR.webapp.client_id" = "XXXX")
+options("googleAuthR.webapp.client_secret" = "XXXX")
 
 #gar_set_client(scopes="https://www.googleapis.com/auth/analytics.readonly")
 
