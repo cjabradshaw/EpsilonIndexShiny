@@ -33,7 +33,7 @@ This app accompanies the article:
 
 4. Choose how you want the output file to be ordered by selecting one of the four choices in the drop-down menu:
 
-<i>ε-index</i>, <i>gender-debiased ε-index</i>, <i>ε′-index</i>, or <i>gender-debiased ε′-index</i>
+   <i>ε-index</i>, <i>gender-debiased ε-index</i>, <i>ε′-index</i>, or <i>gender-debiased ε′-index</i>
 
 If there are insufficient individuals per gender to estimate a gender-specific index, we recommmend not using or sorting based on the gender-debiased index. If the individuals in the sample are not all in the same approximate discipline, we recommend not using or sorting based on either of the two normalised (ε′) indices.
 
