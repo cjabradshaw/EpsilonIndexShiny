@@ -9,7 +9,7 @@ Existing citation-based indices used to rank research performance do not permit 
 
 This <a target="_blank" href="https://cran.r-project.org">R</a> <a href="https://shiny.rstudio.com">Shiny</a> app can be accessed via shinyapps.io using the URL <a target="_blank" href="https://cjabradshaw.shinyapps.io/epsilonIndex/">cjabradshaw.shinyapps.io/epsilonIndex</a>. The app is an online interface of the original R code for calculating the the ε-index manually (see this <a href="https://github.com/cjabradshaw/EpsilonIndex">Github repository</a>).
 
-Because third-party scraping of Google Scholar data violates their <a href="https://policies.google.com/terms?hl=en">terms of service</a>, the automatic interface part of the <a href="https://github.com/cjabradshaw/EpsilonIndex">original code</a> using the <a href="https://www.rdocumentation.org/packages/scholar/versions/0.1.7"><strong>scholar</strong></a> library is disable in the <a target="_blank" href="https://cjabradshaw.shinyapps.io/epsilonIndex/">app</a>.
+Because third-party scraping of Google Scholar data violates their <a href="https://policies.google.com/terms?hl=en">terms of service</a>, the automatic interface part of the <a href="https://github.com/cjabradshaw/EpsilonIndex">original code</a> using the <a href="https://www.rdocumentation.org/packages/scholar/versions/0.1.7"><strong>scholar</strong></a> library is disabled in the <a target="_blank" href="https://cjabradshaw.shinyapps.io/epsilonIndex/">app</a>.
 
 This app accompanies the article:
 
