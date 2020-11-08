@@ -7,22 +7,6 @@ rm(list = ls())
 
 # load libraries
 library(shiny)
-library(scholar)
-
-# Google authentication
-library(googleID)
-library(shinyjs)
-library(googleAuthR)
-
-options(googleAuthR.scopes.selected = c("https://www.googleapis.com/auth/userinfo.email",
-                                        "https://www.googleapis.com/auth/userinfo.profile"
-                                        ))
-options("googleAuthR.webapp.client_id" = "XXXX")
-options("googleAuthR.webapp.client_secret" = "XXXX")
-
-#gar_set_client(scopes="https://www.googleapis.com/auth/analytics.readonly")
-
-library(googleAnalyticsR)
 
 ## call functions
 source(file.path("./", "epsilonIndexFunc.R"), local=T)
@@ -88,57 +72,6 @@ ui <- fluidPage(
                        ) # sidebarLayout
               ), # end tab1
               
-              tabPanel(value="tab2", title="retrieve Google Scholar citation data",
-                       useShinyjs(),
-                       sidebarLayout(
-                         sidebarPanel(
-                           #gar_auth_jsUI("auth"),
-                           
-                           p(style="font-family:Avenir","To use this function, you must log in to your Google account",
-                             googleAuthUI("gauth_login")),
-
-                           wellPanel(
-                             fileInput("file2", "choose delimited file with Google Scholar IDs & genders (2 columns)",
-                                       multiple=F, buttonLabel="choose file",placeholder="no file selected"),
-                             radioButtons("sep2","separator",choices=c(comma=',',space="",tab="\t")),
-                             checkboxInput("header2", "header?", TRUE),
-                             hr(),
-                             actionButton("genButton", label="retrieve GS data"),
-                             hr(),
-                             selectInput("sortind2", "choose index to sort by:", 
-                                         c("ε-index"="e","gender-debiased ε-index"="d","ε′-index"="ep","gender-debiased ε′-index"="dp")),
-                             actionButton("calcButton2", label="calculate ε-index"),
-                             br(),
-                             tags$small(style="font-family:Avenir", "(refresh page to clear data)"),
-                             br(),
-                             downloadButton('downloadData2', 'download',icon = shiny::icon("download"))
-                             
-                             
-                           ),
-                         ),
-                         
-                         # open main panel
-                         mainPanel(
-                           textOutput("display_username"),
-                           
-                           fluidRow(
-                             tags$div(id = "secondOutput", 
-                                      h3("input data"),
-                                      dataTableOutput("table2")) 
-                           ),
-                           
-                           fluidRow(
-                             tags$div(id = "placeholder2") # the dynamic UI will be inserted relative to this placeholder
-                           ),
-                           
-                           dataTableOutput("etable2")
-                           
-                         ) # close mainPanel
-                         
-                       ) # sidebarLayout
-                       
-              ), # end tab2
-              
               tabPanel(value="tab3", title=tags$strong("notes (input/output column descriptions)"),
                        tags$h2(style="font-family:Avenir", "Column descriptors"),
                        tags$h3(style="font-family:Avenir", "User-collated citation data"),
@@ -148,10 +81,6 @@ ui <- fluidPage(
                        tags$p(style="font-family:Avenir", tags$strong("COLUMN 4"),": ", tags$em("h")," — researcher's h-index"),
                        tags$p(style="font-family:Avenir", tags$strong("COLUMN 5"),": ", tags$em("maxcit")," — number of citations of researcher's most cited peer-reviewed paper"),
                        tags$p(style="font-family:Avenir", tags$strong("COLUMN 6"),": ", tags$em("firstyrpub")," — the year of the researcher's first published peer-reviewed paper"),
-                       
-                       tags$h3(style="font-family:Avenir", "Google Scholar IDs & gender input"),
-                       tags$p(style="font-family:Avenir", tags$strong("COLUMN 1"),": ", tags$em("GSID")," — Google Scholar researcher ID"),
-                       tags$p(style="font-family:Avenir", tags$strong("COLUMN 2"),": ", tags$em("gender")," — researcher's gender (F or M)"),
                        
                        tags$h3(style="font-family:Avenir", "ε-index output"),
                        tags$p(style="font-family:Avenir", tags$strong("COLUMN 1"),": ", tags$em("ID")," — researcher ID"),
@@ -229,112 +158,11 @@ server <- function(input, output, session) {
         }
       )
     } # end if for tab1
-
-        
-    if(input$tabs == "tab2"){
-      #auth <- callModule(gar_auth_js, "auth")
-      
-      ## Global variables needed throughout the app
-      rv <- reactiveValues(
-        login = FALSE
-      )
-
-      ## Authentication
-      accessToken <- callModule(googleAuth, "gauth_login",
-                                login_class = "btn btn-primary",
-                                logout_class = "btn btn-primary")
-      userDetails <- reactive({
-        validate(
-          need(accessToken(), "not logged in")
-        )
-        rv$login <- TRUE
-        with_shiny(get_user_info, shiny_access_token = accessToken())
-      })
-
-      ## Display user's Google display name after successful login
-      output$display_username <- renderText({
-        validate(
-          need(userDetails(), "getting user details")
-        )
-        userDetails()$displayName
-      })
-
-      ## Workaround to avoid shinyaps.io URL problems
-      observe({
-        if (rv$login) {
-          shinyjs::onclick("gauth_login-googleAuthUi",
-                           shinyjs::runjs("window.location.href = 'https://cjabradshaw.shinyapps.io/epsilonIndex/';"))
-        }
-      })
-      
-      output$table2 <- renderDataTable({
-        file_to_read = input$file2
-        if(is.null(file_to_read)){
-          return()
-        }
-        read.table(file_to_read$datapath, sep=input$sep2, header=input$header2)
-      }) # end output table2
-      
-      datin2 <- reactive({
-        fileinp2 <- input$file2
-        if(is.null(fileinp2)){return()}
-        inpdat2 <- data.frame(read.csv(fileinp2$datapath, header = input$header2))
-        return(inpdat2)
-      }) # end datin2
-      
-      getProfileFunc <- function(gsdata) {
-        gsdatalen <- dim(gsdata)[1]
-        profileslist <- lapply(gsdata[,1], scholar::get_profile)
-        hs <- i10s <- maxcits <- Y1s <- rep(NA,gsdatalen)
-        for (r in 1:gsdatalen) {
-          hs[r] <- profileslist[[r]]$h_index
-          i10s[r] <- profileslist[[r]]$i10_index
-          maxcits[r] <- get_publications(as.character(profileslist[[r]]$id))$cites[1]
-          Y1s[r] <- get_oldest_article(profileslist[[r]]$id)
-        }
-        inputdata <- data.frame(gsdata[,1], gsdata[,2], i10s, hs, maxcits, Y1s)
-        colnames(inputdata) <- c("personID", "gender", "i10", "h", "maxcit","firstyrpub")
-        return(inputdata)
-      }
-      
-      # when action button pressed ...
-      observeEvent(input$genButton, {
-        removeUI("div:has(>#secondOutput)")
-        insertUI(
-          selector = "#placeholder2",
-          where = "afterEnd", # inserts UI after the end of the placeholder element
-          ui = fluidRow(
-            h3("GS data loading from server ..."),
-            output$gstable <- renderDataTable({
-              if(is.null(datin2())){return ()}
-              results2 <<- getProfileFunc(gsdata=(datin2()))
-            })))
-      }) # end observeEvent
-      
-      observeEvent(input$calcButton2,
-                   output$etable2 <- renderDataTable({
-                     results3 <<- epsilonIndexFunc(datsamp=(results2), sortindex=input$sortind2)
-                     results3
-                   })
-      ) # end observeEvent
-      
-      output$downloadData2 <- downloadHandler(
-        filename = function() {
-          paste("epsilonIndexOut", "csv", sep = ".")
-        },
-        
-        content = function(file2) {
-          sep <- ","
-          
-          write.table(results3, file2, sep=sep, row.names = F)
-        }
-      )
-      
-    } # end if for tab2
     
   }) # end tab Events
   
   session$onSessionEnded(stopApp)
+  
 } # end server
 
 shinyApp(ui, server)
