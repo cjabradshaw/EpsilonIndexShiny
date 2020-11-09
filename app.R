@@ -29,8 +29,16 @@ ui <- fluidPage(
            the ε-index, which is simple to calculate, based on open-access data, corrects for disciplinary variation, 
            can be adjusted for career breaks, and sets a sample-specific threshold above and below which a researcher 
            is deemed to be performing above or below expectation. This R Shiny App estimates the ε-index and its variants 
-           using user-provided data files. All R code and example data necessary to reproduce these analyses is available ",
-           tags$a(href = "https://github.com/cjabradshaw/EpsilonIndex", "here"), ".")
+           using user-provided data files. This Github ",
+           tags$a(href = "https://github.com/cjabradshaw/EpsilonIndexShiny", "repository"),
+           "provides all the 'under-the-bonnet' R code for this app."),
+    tags$h4(style="font-family:Avenir", "Instructions"),
+    tags$p(style="font-family:Avenir", "1. Create a delimited text file of", tags$strong("exactly the same format"), "as the example file in this repository (", tags$a(href="https://github.com/cjabradshaw/EpsilonIndex/blob/main/datasample.csv", "datasample.csv "), ")."),
+    tags$p(style="font-family:Avenir", "2. Load your delimited text file in the app by clicking the", tags$strong("choose file"), "button."),
+    tags$p(style="font-family:Avenir", "3. Select whether you want the index to be calculated for women and men separately as well as pooled (", tags$strong("include gender split?"), "). If there are too few researchers in any gender category, the algorithm will fail."),
+    tags$p(style="font-family:Avenir", "4. Choose how you want the output file to be ordered by selecting one of the four choices in the drop-down menu:", tags$strong("ε-index"),",",tags$strong("gender-debiased ε-index"),",",tags$strong("ε′-index"),", or",tags$strong("gender-debiased ε′-index"),"."),
+    tags$p(style="font-family:Avenir", "5. Click the", tags$strong("calculate ε-index"), "button."),
+    tags$p(style="font-family:Avenir", "6. Download the results table as a .csv file by clicking the clicking the", tags$strong("download"), "button.")
   ),
   
   tabsetPanel(id="tabs",
@@ -44,6 +52,7 @@ ui <- fluidPage(
                              radioButtons("sep","separator",choices=c(comma=',',space="",tab="\t")),
                              checkboxInput("header1", "header?", TRUE),
                              tags$hr(),
+                             radioButtons("bygender", "include gender split?",choices=c(N="no",Y='yes'), inline=T),
                              selectInput("sortind", "choose index to sort by", 
                                          c("ε-index"="e","gender-debiased ε-index"="d","ε′-index"="ep","gender-debiased ε′-index"="dp")),
                              actionButton("calcButton", label="calculate ε-index"),
@@ -86,16 +95,16 @@ ui <- fluidPage(
                        tags$p(style="font-family:Avenir", tags$strong("COLUMN 1"),": ", tags$em("ID")," — researcher ID"),
                        tags$p(style="font-family:Avenir", tags$strong("COLUMN 2"),": ", tags$em("gen")," — researcher's gender (F or M)"),
                        tags$p(style="font-family:Avenir", tags$strong("COLUMN 3"),": ", tags$em("yrsP")," — number of years since first peer-reviewed paper"),
-                       tags$p(style="font-family:Avenir", tags$strong("COLUMN 4"),": ", tags$em("genE")," — ε-index relative to others of the same gender in the sample"),
+                       tags$p(style="font-family:Avenir", tags$strong("COLUMN 4"),": ", tags$em("genE")," — ε-index relative to others of the same gender in the sample (not included if you select no gender split)"),
                        tags$p(style="font-family:Avenir", tags$strong("COLUMN 5"),": ", tags$em("exp")," — whether above or below expectation based on chosen index (default is 'e' = pooled index)"),
                        tags$p(style="font-family:Avenir", tags$strong("COLUMN 6"),": ", tags$em("m")," — h-index ÷ yrsP"),
                        tags$p(style="font-family:Avenir", tags$strong("COLUMN 7"),": ", tags$em("h")," — h-index"),
-                       tags$p(style="font-family:Avenir", tags$strong("COLUMN 8"),": ", tags$em("genRnk")," — rank from gender.eindex (1 = highest)"),
-                       tags$p(style="font-family:Avenir", tags$strong("COLUMN 9"),": ", tags$em("debRnk")," — gender-debiased rank (1 = highest)"),
-                       tags$p(style="font-family:Avenir", tags$strong("COLUMN 10"),": ", tags$em("poolE")," — ε-index generated from the entire sample (not gender-specific)"),
-                       tags$p(style="font-family:Avenir", tags$strong("COLUMN 11"),": ", tags$em("poolRnk")," — rank from poolE (1 = highest)"),
-                       tags$p(style="font-family:Avenir", tags$strong("COLUMN 12"),": ", tags$em("eP")," — scaled poolE (ε′-index)"),
-                       tags$p(style="font-family:Avenir", tags$strong("COLUMN 13"),": ", tags$em("debEP")," — scaled genE (gender ε′-index)"),
+                       tags$p(style="font-family:Avenir", tags$strong("COLUMN 8"),": ", tags$em("genRnk")," — rank from gender.eindex (1 = highest) (not included if you select no gender split)"),
+                       tags$p(style="font-family:Avenir", tags$strong("COLUMN 9"),": ", tags$em("debRnk")," — gender-debiased rank (1 = highest) (not included if you select no gender split)"),
+                       tags$p(style="font-family:Avenir", tags$strong("COLUMN 10"),": ", tags$em("poolE")," — ε-index generated from the entire sample (not gender-specific) (COLUMN 4 if you select gender split)"),
+                       tags$p(style="font-family:Avenir", tags$strong("COLUMN 11"),": ", tags$em("poolRnk")," — rank from poolE (1 = highest) (COLUMN 8 if you select a gender split)"),
+                       tags$p(style="font-family:Avenir", tags$strong("COLUMN 12"),": ", tags$em("eP")," — scaled poolE (ε′-index) (COLUMN 9 if you select a gender split)"),
+                       tags$p(style="font-family:Avenir", tags$strong("COLUMN 13"),": ", tags$em("debEP")," — scaled genE (gender ε′-index) (not included if you select no gender split)"),
                        tags$br(),
                        tags$p(style="font-family:Avenir", tags$em("if sort index = 'ε′-index'")),
                        tags$p(style="font-family:Avenir", tags$strong("COLUMN 14"),": ", tags$em("ePRnk")," — rank from ε′-index"),
@@ -132,6 +141,12 @@ server <- function(input, output, session) {
         return(inpdat)
       }) # end datin
       
+      sortInd <- reactiveValues()
+      observe({
+        sortInd$x <- as.character(input$sortind)
+        sortInd$y <- ifelse(input$bygender == "no", "d", sortInd$x)
+      })
+      
       # when action button pressed ...
       observeEvent(input$calcButton, {
         removeUI("div:has(>#firstOutput)")
@@ -142,7 +157,7 @@ server <- function(input, output, session) {
             h3("output"),
             output$etable <- renderDataTable({
               if(is.null(datin())){return ()}
-              results <<- epsilonIndexFunc(datsamp=(datin()), sortindex=input$sortind)
+              results <<- epsilonIndexFunc(datsamp=(datin()), bygender=input$bygender, sortindex=sortInd$y)
             })))
       }) # end observeEvent
       
@@ -166,4 +181,3 @@ server <- function(input, output, session) {
 } # end server
 
 shinyApp(ui, server)
-
