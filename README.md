@@ -31,15 +31,17 @@ This app accompanies the article:
   
 3. Load your delimited text file in the app by clicking the <i>choose file</i> button.
 
-4. Choose how you want the output file to be ordered by selecting one of the four choices in the drop-down menu:
+4. Select whether you want the index to be calculated for women and men separately as well as pooled ('<i>include gender split?</i>'). If there are too few researchers in any gender category, then the algorithm will fail.
+
+5. Choose how you want the output file to be ordered by selecting one of the four choices in the drop-down menu:
 
    <i>ε-index</i>, <i>gender-debiased ε-index</i>, <i>ε′-index</i>, or <i>gender-debiased ε′-index</i>
 
 If there are insufficient individuals per gender to estimate a gender-specific index, we recommmend not using or sorting based on the gender-debiased index. If the individuals in the sample are not all in the same approximate discipline, we recommend not using or sorting based on either of the two normalised (ε′) indices.
 
-5. Click the <i>calculate </i> button.
+6. Click the <i>calculate </i> button.
 
-6. Download the results table as a .csv file by clicking the clicking the <i>download</i> button
+7. Download the results table as a .csv file by clicking the clicking the <i>download</i> button
 
 The output .csv file includes the following columns:
 
