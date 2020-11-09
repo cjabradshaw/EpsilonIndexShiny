@@ -31,7 +31,7 @@ This app accompanies the article:
   
 3. Load your delimited text file in the app by clicking the <i>choose file</i> button.
 
-4. Select whether you want the index to be calculated for women and men separately as well as pooled ('<i>include gender split?</i>'). If there are too few researchers in any gender category, then the algorithm will fail.
+4. Select whether you want the index to be calculated for women and men separately as well as pooled ('<i>include gender split?</i>'). If there are too few researchers in any gender category, the algorithm will fail.
 
 5. Choose how you want the output file to be ordered by selecting one of the four choices in the drop-down menu:
 
