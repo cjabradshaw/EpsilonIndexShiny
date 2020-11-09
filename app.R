@@ -21,6 +21,7 @@ ui <- fluidPage(
   titlePanel("calculate ε-index"),
   
   wellPanel(
+    tags$a(href="https://github.com/cjabradshaw/EpsilonIndexShiny", tags$img(height = 200, src = "epsilonIndex.png", style="float:right")),
     tags$p(style="font-family:Avenir", "R Shiny App by", tags$a(href="https://globalecologyflinders.com/people/#CJAB", "Corey Bradshaw "),
            tags$a(href = "mailto:corey.bradshaw@flinders.edu.au","(e-mail; "),
            tags$a(href = "https://github.com/cjabradshaw", "Github)")),
@@ -36,6 +37,7 @@ ui <- fluidPage(
     tags$p(style="font-family:Avenir", "1. Create a delimited text file of", tags$strong("exactly the same format"), "as the example file in this repository (", tags$a(href="https://github.com/cjabradshaw/EpsilonIndex/blob/main/datasample.csv", "datasample.csv "), ")."),
     tags$p(style="font-family:Avenir", "2. Load your delimited text file in the app by clicking the", tags$strong("choose file"), "button."),
     tags$p(style="font-family:Avenir", "3. Select whether you want the index to be calculated for women and men separately as well as pooled (", tags$strong("include gender split?"), "). If there are too few researchers in any gender category, the algorithm will fail."),
+    tags$a(href="https://globalecologyflinders.com/", tags$img(height = 100, src = "GEL Logo Kaurna transparent.png", style="float:right")),
     tags$p(style="font-family:Avenir", "4. Choose how you want the output file to be ordered by selecting one of the four choices in the drop-down menu:", tags$strong("ε-index"),",",tags$strong("gender-debiased ε-index"),",",tags$strong("ε′-index"),", or",tags$strong("gender-debiased ε′-index"),"."),
     tags$p(style="font-family:Avenir", "5. Click the", tags$strong("calculate ε-index"), "button."),
     tags$p(style="font-family:Avenir", "6. Download the results table as a .csv file by clicking the clicking the", tags$strong("download"), "button.")
@@ -83,6 +85,7 @@ ui <- fluidPage(
               
               tabPanel(value="tab3", title=tags$strong("notes (input/output column descriptions)"),
                        tags$h2(style="font-family:Avenir", "Column descriptors"),
+                       tags$a(href="https://flinders.edu.au/", tags$img(height = 100, src = "F_V_CMYK.png", style="float:right")),
                        tags$h3(style="font-family:Avenir", "User-collated citation data"),
                        tags$p(style="font-family:Avenir", tags$strong("COLUMN 1"),": ", tags$em("personID")," — any character identification of an individual researcher (can be a name)"),
                        tags$p(style="font-family:Avenir", tags$strong("COLUMN 2"),": ", tags$em("gender")," — researcher's gender (F or M)"),
@@ -111,8 +114,7 @@ ui <- fluidPage(
                        tags$br(),
                        tags$p(style="font-family:Avenir", tags$em("if sort index = 'gender-debiased ε′-index'")),
                        tags$p(style="font-family:Avenir", tags$strong("COLUMN 14"),": ", tags$em("ePddebRnk")," — rank from gender ε′-index"),
-                       tags$br()
-                       
+                       tags$a(href="https://epicaustralia.org.au/", tags$img(height = 300, src = "animatedCABAH logo.gif", style="vertical-align:middle"))
                        
               ) # end tab3
   ) # end tabsetPanel
@@ -121,6 +123,8 @@ ui <- fluidPage(
 
 
 server <- function(input, output, session) {
+  
+  
   
   observeEvent(input$tabs, {
     
@@ -137,7 +141,7 @@ server <- function(input, output, session) {
       datin <- reactive({
         fileinp <- input$file1
         if(is.null(fileinp)){return()}
-        inpdat <- data.frame(read.csv(fileinp$datapath, header = input$header1))
+        inpdat <- data.frame(read.table(fileinp$datapath, sep=input$sep, header = input$header1))
         return(inpdat)
       }) # end datin
       
