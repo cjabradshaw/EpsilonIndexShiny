@@ -21,7 +21,7 @@ ui <- fluidPage(
   titlePanel("calculate ε-index"),
   
   wellPanel(
-    tags$a(href="https://github.com/cjabradshaw/EpsilonIndexShiny", tags$img(height = 200, src = "epsilonIndex.png", style="float:right")),
+    tags$a(href="https://github.com/cjabradshaw/EpsilonIndexShiny", tags$img(height = 200, src = "epsilonIndex logo.png", style="float:right")),
     tags$p(style="font-family:Avenir", "R Shiny App by", tags$a(href="https://globalecologyflinders.com/people/#CJAB", "Corey Bradshaw "),
            tags$a(href = "mailto:corey.bradshaw@flinders.edu.au","(e-mail; "),
            tags$a(href = "https://github.com/cjabradshaw", "Github)")),
@@ -32,7 +32,7 @@ ui <- fluidPage(
            is deemed to be performing above or below expectation. This R Shiny App estimates the ε-index and its variants 
            using user-provided data files. This Github ",
            tags$a(href = "https://github.com/cjabradshaw/EpsilonIndexShiny", "repository"),
-           "provides all the 'under-the-bonnet' R code for this app."),
+           "provides all the 'under-the-bonnet' R code for the app. The related paper (pre-print) is available", tags$a(href="https://doi.org/10.22541/au.160373218.83526843/v1", "here.")),
     tags$h4(style="font-family:Avenir", "Instructions"),
     tags$p(style="font-family:Avenir", "1. Create a delimited text file of", tags$strong("exactly the same format"), "as the example file in this repository (", tags$a(href="https://github.com/cjabradshaw/EpsilonIndex/blob/main/datasample.csv", "datasample.csv "), ")."),
     tags$p(style="font-family:Avenir", "2. Load your delimited text file in the app by clicking the", tags$strong("choose file"), "button."),
