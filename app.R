@@ -30,17 +30,17 @@ ui <- fluidPage(
            the ε-index, which is simple to calculate, based on open-access data, corrects for disciplinary variation, 
            can be adjusted for career breaks, and sets a sample-specific threshold above and below which a researcher 
            is deemed to be performing above or below expectation. This R Shiny App estimates the ε-index and its variants 
-           using user-provided data files. This Github ",
+           using user-provided data files. This", tags$i(class="fab fa-github"), "Github ",
            tags$a(href = "https://github.com/cjabradshaw/EpsilonIndexShiny", "repository"),
            "provides all the 'under-the-bonnet' R code for the app. The related paper (pre-print) is available", tags$a(href="https://doi.org/10.22541/au.160373218.83526843/v1", "here.")),
     tags$h4(style="font-family:Avenir", "Instructions"),
-    tags$p(style="font-family:Avenir", "1. Create a delimited text file of", tags$strong("exactly the same format"), "as the example file in this repository (", tags$a(href="https://github.com/cjabradshaw/EpsilonIndex/blob/main/datasample.csv", "datasample.csv "), ")."),
-    tags$p(style="font-family:Avenir", "2. Load your delimited text file in the app by clicking the", tags$strong("choose file"), "button."),
-    tags$p(style="font-family:Avenir", "3. Select whether you want the index to be calculated for women and men separately as well as pooled (", tags$strong("include gender split?"), "). If there are too few researchers in any gender category, the algorithm will fail."),
+    tags$p(style="font-family:Avenir", "1. Create a delimited text file of", tags$strong("exactly the same format"), "as the example file in this repository (", tags$a(href="https://github.com/cjabradshaw/EpsilonIndex/blob/main/datasample.csv", "datasample.csv "), "), although you can specify the delimit character."),
+    tags$p(style="font-family:Avenir", "2. Load your delimited text file in the app by clicking the",tags$i(class="fas fa-file-import"), tags$strong("choose file"), "button."),
+    tags$p(style="font-family:Avenir", "3. Select whether you want the index to be calculated for women and men separately as well as pooled (", tags$i(class="fas fa-venus-mars") , tags$strong("include gender split?"), "). If there are too few researchers in any gender category, the algorithm will fail."),
     tags$a(href="https://globalecologyflinders.com/", tags$img(height = 100, src = "GEL Logo Kaurna transparent.png", style="float:right")),
-    tags$p(style="font-family:Avenir", "4. Choose how you want the output file to be ordered by selecting one of the four choices in the drop-down menu:", tags$strong("ε-index"),",",tags$strong("gender-debiased ε-index"),",",tags$strong("ε′-index"),", or",tags$strong("gender-debiased ε′-index"),"."),
-    tags$p(style="font-family:Avenir", "5. Click the", tags$strong("calculate ε-index"), "button."),
-    tags$p(style="font-family:Avenir", "6. Download the results table as a .csv file by clicking the clicking the", tags$strong("download"), "button.")
+    tags$p(style="font-family:Avenir", "4. Choose how you want the output file to be", tags$i(class="fas fa-sort"), "sorted by selecting one of the four choices in the drop-down menu:", tags$strong("ε-index"),",",tags$strong("gender-debiased ε-index"),",",tags$strong("ε′-index"),", or",tags$strong("gender-debiased ε′-index"),"."),
+    tags$p(style="font-family:Avenir", "5. Click the", tags$i(class="fas fa-calculator"), tags$strong("calculate ε-index"), "button."),
+    tags$p(style="font-family:Avenir", "6. Download the results table as a .csv file by clicking the", tags$i(class="fas fa-download"), tags$strong("download"), "button.")
   ),
   
   tabsetPanel(id="tabs",
@@ -49,15 +49,15 @@ ui <- fluidPage(
                        sidebarLayout(
                          sidebarPanel(
                            wellPanel(
-                             fileInput("file1", "choose delimited file with the necessary citation data (6 columns)",
+                             fileInput("file1", label=tags$p(tags$i(class="fas fa-file-import"),"choose delimited file with the necessary citation data (6 columns)"),
                                        multiple=F, buttonLabel="choose file",placeholder="no file selected"),
-                             radioButtons("sep","separator",choices=c(comma=',',space="",tab="\t")),
+                             radioButtons("sep",label=tags$p(tags$i(class="fas fa-file-csv"),"separator"),choices=c(comma=',',space="",tab="\t"), inline=T),
                              checkboxInput("header1", "header?", TRUE),
                              tags$hr(),
-                             radioButtons("bygender", "include gender split?",choices=c(N="no",Y='yes'), inline=T),
-                             selectInput("sortind", "choose index to sort by", 
+                             radioButtons("bygender", label=tags$p(tags$i(class='fas fa-venus-mars'),"include gender split?"),choices=c(N="no",Y='yes'), inline=T),
+                             selectInput("sortind",label=tags$p(tags$i(class='fas fa-sort'), "choose sort index"), 
                                          c("ε-index"="e","gender-debiased ε-index"="d","ε′-index"="ep","gender-debiased ε′-index"="dp")),
-                             actionButton("calcButton", label="calculate ε-index"),
+                             actionButton("calcButton", label="calculate ε-index",icon=shiny::icon("fas fa-calculator")),
                              br(),
                              tags$small(style="font-family:Avenir", "(refresh page to clear data)"),
                              br(),
