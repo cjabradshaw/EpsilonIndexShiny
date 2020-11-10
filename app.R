@@ -64,7 +64,7 @@ ui <- fluidPage(
                              checkboxInput("header1", "header?", TRUE),
                              tags$hr(),
                              radioButtons("bygender", label=tags$p(tags$i(class='fas fa-venus-mars'), "include gender split?"), inline=T,
-                                          choiceNames = list((icon("fas fa-times")), (icon("fas fa-check"))), choiceValues = list("no","yes")),
+                                          choiceNames = list((icon("fas fa-thumbs-down")), (icon("fas fa-thumbs-up"))), choiceValues = list("no","yes")),
                              tags$hr(),
                              selectInput("sortind",label=tags$p(tags$i(class='fas fa-sort'), "choose sort index"), 
                                          c("ε-index"="e","gender-debiased ε-index"="d","ε′-index"="ep","gender-debiased ε′-index"="dp")),
