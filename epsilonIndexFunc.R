@@ -148,9 +148,10 @@ epsilonIndexFunc <- function(datsamp, bygender='no', sortindex='e') {
 
   if (bygender == "no") {
     full.out1 <- dat.sort
+    eP <- round(scale(full.out1[,4], scale=T, center=F), 4)
+    full.out1[,4] <- round(full.out1[,4], 4)
     colnames(full.out1)[4] <- "poolE"
     colnames(full.out1)[8] <- "poolRnk"
-    eP <- round(scale(full.out1[,4], scale=T, center=F), 4)
     sortout <- data.frame(full.out1,eP)
   } # end bygender = no if statement
   
