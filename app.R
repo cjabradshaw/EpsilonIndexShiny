@@ -18,7 +18,7 @@ ui <- fluidPage(
   ),
   
   # title of app
-  titlePanel(The ε-index: a fairer way to rank researchers with citation data"),
+  titlePanel("The ε-index: a fairer way to rank researchers with citation data"),
   
   wellPanel(style = "background: azure",
     tags$a(href="https://github.com/cjabradshaw/EpsilonIndexShiny", tags$img(height = 200, src = "epsilonIndex logo.png", style="float:right")),
@@ -97,7 +97,7 @@ ui <- fluidPage(
                        ) # sidebarLayout
               ), # end tab1
               
-              tabPanel(value="tab3", title=tags$strong("input/output column descriptors"), style = "background: MintCream",
+              tabPanel(value="tab2", title=tags$strong("input/output column descriptors"), style = "background: MintCream",
                        tags$h2(style="font-family:Avenir", "Column descriptors"),
                        tags$a(href="https://flinders.edu.au/", tags$img(height = 100, src = "F_V_CMYK.png", style="float:right",title="Flinders University")),
                        tags$h3(style="font-family:Avenir", "User-collated citation data"),
@@ -118,12 +118,13 @@ ui <- fluidPage(
                                tags$li(tags$p(style="font-family:Avenir", tags$strong("COLUMN 5"),": ", tags$em("exp")," — whether above or below expectation based on chosen index (default is 'e' = pooled index)")),
                                tags$li(tags$p(style="font-family:Avenir", tags$strong("COLUMN 6"),": ", tags$em("m")," — h-index ÷ yrsP")),
                                tags$li(tags$p(style="font-family:Avenir", tags$strong("COLUMN 7"),": ", tags$em("h")," — h-index")),
-                               tags$li(tags$p(style="font-family:Avenir", tags$strong("COLUMN 8"),": ", tags$em("genRnk")," — rank from gender.eindex (1 = highest) (not included if you select no gender split)")),
-                               tags$li(tags$p(style="font-family:Avenir", tags$strong("COLUMN 9"),": ", tags$em("debRnk")," — gender-debiased rank (1 = highest) (not included if you select no gender split)")),
-                               tags$li(tags$p(style="font-family:Avenir", tags$strong("COLUMN 10"),": ", tags$em("poolE")," — ε-index generated from the entire sample (not gender-specific) (COLUMN 4 if you select gender split)")),
-                               tags$li(tags$p(style="font-family:Avenir", tags$strong("COLUMN 11"),": ", tags$em("poolRnk")," — rank from poolE (1 = highest) (COLUMN 8 if you select a gender split)")),
+                               tags$li(tags$p(style="font-family:Avenir", tags$strong("COLUMN 8"),": ", tags$em("debEP")," — scaled genE (gender ε′-index) (not included if you select no gender split)")),
+                               tags$li(tags$p(style="font-family:Avenir", tags$strong("COLUMN 9"),": ", tags$em("genRnk")," — rank from gender.eindex (1 = highest) (not included if you select no gender split)")),
+                               tags$li(tags$p(style="font-family:Avenir", tags$strong("COLUMN 10"),": ", tags$em("debRnk")," — gender-debiased rank (1 = highest) (not included if you select no gender split)")),
+                               tags$li(tags$p(style="font-family:Avenir", tags$strong("COLUMN 11"),": ", tags$em("poolE")," — ε-index generated from the entire sample (not gender-specific) (COLUMN 4 if you select gender split)")),
                                tags$li(tags$p(style="font-family:Avenir", tags$strong("COLUMN 12"),": ", tags$em("eP")," — scaled poolE (ε′-index) (COLUMN 9 if you select a gender split)")),
-                               tags$li(tags$p(style="font-family:Avenir", tags$strong("COLUMN 13"),": ", tags$em("debEP")," — scaled genE (gender ε′-index) (not included if you select no gender split)")),
+                               tags$li(tags$p(style="font-family:Avenir", tags$strong("COLUMN 13"),": ", tags$em("poolRnk")," — rank from poolE (1 = highest) (COLUMN 8 if you select a gender split)")),
+                               
                        tags$br(),
                        tags$li(tags$p(style="font-family:Avenir", tags$em("if sort index = 'ε′-index'")),
                        tags$p(style="font-family:Avenir", tags$strong("COLUMN 14"),": ", tags$em("ePRnk")," — rank from ε′-index")),
@@ -132,6 +133,40 @@ ui <- fluidPage(
                        tags$li(tags$p(style="font-family:Avenir", tags$em("if sort index = 'gender-debiased ε′-index'")),
                        tags$p(style="font-family:Avenir", tags$strong("COLUMN 14"),": ", tags$em("ePddebRnk")," — rank from gender ε′-index"))),
                        
+                       tags$br()
+                       
+              ), # end tab2
+              
+              tabPanel(value="tab3", title=tags$strong("index variants: explainer"), style = "background: MintCream",
+                       tags$h2(style="font-family:Avenir", "Description of the four variants of the ε-index"),
+                       tags$a(href="https://flinders.edu.au/", tags$img(height = 100, src = "F_V_CMYK.png", style="float:right",title="Flinders University")),
+                       tags$ol(tags$li(tags$u(tags$p(style="font-family:Avenir", tags$strong("ε-index"), "(COLUMN", tags$em("poolE"),") — the base index not taking gender into account, or normalisation")),
+                                       tags$p(style="font-family:Avenir", "The base ε-index is the residual of the linear relationship between a researcher's citation mass (",tags$em("A"),
+                                              tags$sub("rel"), ") and the log", tags$sub(tags$em("e")), "of the number of years publishing (", tags$em("t"), ")."),
+                                       tags$p(style="font-family:Avenir", "The citation mass (",tags$em("A"),tags$sub("rel"),") is the area under the log",tags$sub(tags$em("e")), "-log",tags$sub(tags$em("e")), "relationship between",
+                                              tags$em("y"), "= [i",tags$sub("10"),",", tags$em("h"), ", 1] and", tags$em("x"), "= [10,",tags$em("h"),",", tags$em("c"),tags$sub("m"), "],"),
+                                       tags$p(style="font-family:Avenir", "where i",tags$sub("10"), "= i", tags$sub("10"), "index,", tags$em("h"), "=", tags$em("h"),
+                                              "-index, and", tags$em("c"),tags$sub("m"), "= number of citations of the researcher’s most highly cited paper."),
+                                       tags$p(style="font-family:Avenir", "These data can be founded for any researcher listed on", tags$a(href="http://scholar.google.com", "Google Scholar"), ".")),
+                               tags$a(href="https://epicaustralia.org.au/", tags$img(height = 150, src = "CABAHlogo.png",
+                                                                                     style="float:right", title="ARC Centre of Excellence for Australian Biodiversity and Heritage")),
+                               tags$li(tags$u(tags$p(style="font-family:Avenir", tags$strong("gender-debiased ε-index"), "(COLUMN", tags$em("genE"),") — the base index corrected for gender bias, but not normalised")),
+                                       tags$p(style="font-family:Avenir", "Here, researchers are split into each main gender (F = women; M = men; at this stage we have not implemented a function to treat non-binary genders separately), and then the index is calculated for each researcher relative to her/his respective group. The resulting indices are then ranked to provided a gender-debiased final rank")),
+                               tags$li(tags$u(tags$p(style="font-family:Avenir", tags$strong("ε′-index"), "(COLUMN", tags$em("eP"),") — the normalised base index")),
+                                       tags$p(style="font-family:Avenir","The approach to calculate the ε-index is the same, except the citation mass (", tags$em("A"),tags$sub("rel"), ") is normalised relative to the sample:"),
+                                       tags$img(height = 50, src = "normaliseEq.png", style="vertical-align:middle"),
+                                       tags$br()),
+                               tags$br(),
+                               tags$li(tags$u(tags$p(style="font-family:Avenir", tags$strong("gender-debiased ε′-index"), "(COLUMN", tags$em("debEP"),") — the normalised index accounting for gender bias")),
+                                       tags$p(style="font-family:Avenir","Following the same approach as above, but normalising for each gender separately"),),
+                               tags$br(),
+                               tags$p(style="font-family:Avenir","For more information, read the original",tags$a(href="https://doi.org/10.22541/au.160373218.83526843/v1", "paper.")),
+                               tags$br()
+                               
+                               ),
+                       
+                       
+                       tags$a(href="https://github.com/cjabradshaw/EpsilonIndexShiny/blob/main/LICENSE", tags$img(height = 50, src = "GNU GPL3.png", style="float:right", title="GNU General Public Licence v3.0")),
                        tags$br()
                        
               ) # end tab3
