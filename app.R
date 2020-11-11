@@ -157,16 +157,12 @@ ui <- fluidPage(
                                        tags$img(height = 50, src = "normaliseEq.png", style="vertical-align:middle"),
                                        tags$br()),
                                tags$br(),
+                               tags$a(href="https://github.com/cjabradshaw/EpsilonIndexShiny/blob/main/LICENSE", tags$img(height = 50, src = "GNU GPL3.png", style="float:right", title="GNU General Public Licence v3.0")),
                                tags$li(tags$u(tags$p(style="font-family:Avenir", tags$strong("gender-debiased ε′-index"), "(COLUMN", tags$em("debEP"),") — the normalised index accounting for gender bias")),
                                        tags$p(style="font-family:Avenir","Following the same approach as above, but normalising for each gender separately"),),
-                               tags$br(),
-                               tags$p(style="font-family:Avenir","For more information, read the original",tags$a(href="https://doi.org/10.22541/au.160373218.83526843/v1", "paper.")),
-                               tags$br()
-                               
                                ),
-                       
-                       
-                       tags$a(href="https://github.com/cjabradshaw/EpsilonIndexShiny/blob/main/LICENSE", tags$img(height = 50, src = "GNU GPL3.png", style="float:right", title="GNU General Public Licence v3.0")),
+                       tags$br(),
+                       tags$p(style="font-family:Avenir","For more information, read the original",tags$a(href="https://doi.org/10.22541/au.160373218.83526843/v1", "paper.")),
                        tags$br()
                        
               ) # end tab3
