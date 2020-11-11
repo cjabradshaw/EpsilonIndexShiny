@@ -18,7 +18,7 @@ ui <- fluidPage(
   ),
   
   # title of app
-  titlePanel(tags$p(style="font-family:Avenir", "Calculate the ε-index: a fairer way to rank researchers with citation data")),
+  titlePanel(The ε-index: a fairer way to rank researchers with citation data"),
   
   wellPanel(style = "background: azure",
     tags$a(href="https://github.com/cjabradshaw/EpsilonIndexShiny", tags$img(height = 200, src = "epsilonIndex logo.png", style="float:right")),
