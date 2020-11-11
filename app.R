@@ -18,13 +18,13 @@ ui <- fluidPage(
   ),
   
   # title of app
-  titlePanel("Calculate the ε-index"),
+  titlePanel(tags$p(style="font-family:Avenir", "Calculate the ε-index: a fairer way to rank researchers with citation data")),
   
   wellPanel(style = "background: azure",
     tags$a(href="https://github.com/cjabradshaw/EpsilonIndexShiny", tags$img(height = 200, src = "epsilonIndex logo.png", style="float:right")),
-    tags$p(style="font-family:Avenir", tags$i(class="fab fa-r-project"),"Shiny App by", tags$a(href="https://globalecologyflinders.com/people/#CJAB", "Corey Bradshaw "),
+    tags$p(style="font-family:Avenir", tags$i(class="fab fa-r-project", title="R Project"),"Shiny App by", tags$a(href="https://globalecologyflinders.com/people/#CJAB", "Corey Bradshaw "),
            tags$a(href = "mailto:corey.bradshaw@flinders.edu.au","(",tags$i(class="far fa-envelope"),"e-mail"),";",
-           tags$a(href = "https://github.com/cjabradshaw", tags$i(class="fab fa-github"),"Github)")),
+           tags$a(href = "https://github.com/cjabradshaw", tags$i(class="fab fa-github",title="Github"),"Github)")),
     tags$h4(style="font-family:Avenir", "Preamble"),
     tags$p(style="font-family:Avenir", "Existing citation-based indices used to rank research performance do not permit a fair comparison 
            of researchers among career stages or disciplines, nor do they treat women and men equally. We designed 
@@ -43,9 +43,11 @@ ui <- fluidPage(
            tags$strong("choose file"), "button."),
     tags$p(style="font-family:Avenir", "3. Select whether you want the index to be calculated for women and men separately as well as pooled (",
            tags$i(class="fas fa-venus-mars"), tags$strong("include gender split?"), "). If there are too few researchers in any gender category, the algorithm will fail."),
-    tags$a(href="https://globalecologyflinders.com/", tags$img(height = 100, src = "GEL Logo Kaurna transparent.png", style="float:right")),
+    tags$a(href="https://globalecologyflinders.com/", tags$img(height = 100, src = "GEL Logo Kaurna transparent.png", style="float:right",
+                                                               title="Global Ecology @ Flinders University")),
     tags$p(style="font-family:Avenir", "4. Choose how you want the output file to be", tags$i(class="fas fa-sort"),
-           "sorted by selecting one of the four choices in the drop-down menu:", tags$strong("ε-index"),",",tags$strong("gender-debiased ε-index"),",",tags$strong("ε′-index"),", or",tags$strong("gender-debiased ε′-index"),"."),
+           "sorted by selecting one of the four choices in the drop-down menu:", tags$strong("ε-index"),",",tags$strong("gender-debiased ε-index"),","
+           ,tags$strong("ε′-index"),", or",tags$strong("gender-debiased ε′-index"),"."),
     tags$p(style="font-family:Avenir", "5. Click the", tags$i(class="fas fa-calculator"), tags$strong("calculate ε-index"), "button."),
     tags$p(style="font-family:Avenir", "6. Download the results table as a", tags$i(class="fas fa-file-csv"), "file by clicking the", tags$i(class="fas fa-download"),
            tags$strong("download"), "button.")
@@ -97,12 +99,14 @@ ui <- fluidPage(
               
               tabPanel(value="tab3", title=tags$strong("input/output column descriptions"), style = "background: MintCream",
                        tags$h2(style="font-family:Avenir", "Column descriptors"),
-                       tags$a(href="https://flinders.edu.au/", tags$img(height = 100, src = "F_V_CMYK.png", style="float:right")),
+                       tags$a(href="https://flinders.edu.au/", tags$img(height = 100, src = "F_V_CMYK.png", style="float:right",title="Flinders University")),
                        tags$h3(style="font-family:Avenir", "User-collated citation data"),
                        tags$p(style="font-family:Avenir", tags$strong("COLUMN 1"),": ", tags$em("personID")," — any character identification of an individual researcher (can be a name)"),
                        tags$p(style="font-family:Avenir", tags$strong("COLUMN 2"),": ", tags$em("gender")," — researcher's gender (F or M)"),
                        tags$p(style="font-family:Avenir", tags$strong("COLUMN 3"),": ", tags$em("i10")," — researcher's i10 index (# papers with ≥ 10 citations); must be > 0"),
                        tags$p(style="font-family:Avenir", tags$strong("COLUMN 4"),": ", tags$em("h")," — researcher's h-index"),
+                       tags$a(href="https://epicaustralia.org.au/", tags$img(height = 150, src = "CABAHlogo.png",
+                                                                             style="float:right", title="ARC Centre of Excellence for Australian Biodiversity and Heritage")),
                        tags$p(style="font-family:Avenir", tags$strong("COLUMN 5"),": ", tags$em("maxcit")," — number of citations of researcher's most cited peer-reviewed paper"),
                        tags$p(style="font-family:Avenir", tags$strong("COLUMN 6"),": ", tags$em("firstyrpub")," — the year of the researcher's first published peer-reviewed paper"),
                        
@@ -124,12 +128,11 @@ ui <- fluidPage(
                        tags$p(style="font-family:Avenir", tags$em("if sort index = 'ε′-index'")),
                        tags$p(style="font-family:Avenir", tags$strong("COLUMN 14"),": ", tags$em("ePRnk")," — rank from ε′-index"),
                        tags$br(),
-                       tags$a(href="https://github.com/cjabradshaw/EpsilonIndexShiny/blob/main/LICENSE", tags$img(height = 50, src = "GNU GPL3.png", style="float:right")),
+                       tags$a(href="https://github.com/cjabradshaw/EpsilonIndexShiny/blob/main/LICENSE", tags$img(height = 50, src = "GNU GPL3.png", style="float:right", title="GNU General Public Licence v3.0")),
                        tags$p(style="font-family:Avenir", tags$em("if sort index = 'gender-debiased ε′-index'")),
                        tags$p(style="font-family:Avenir", tags$strong("COLUMN 14"),": ", tags$em("ePddebRnk")," — rank from gender ε′-index"),
                        
                        tags$br()
-                       #tags$a(href="https://epicaustralia.org.au/", tags$img(height = 300, src = "animatedCABAH logo.gif", style="vertical-align:middle"))
                        
               ) # end tab3
   ) # end tabsetPanel
