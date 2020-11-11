@@ -45,19 +45,19 @@ If there are insufficient individuals per gender to estimate a gender-specific i
 
 The output .csv file includes the following columns:
 
-- <i>ID</i>: researcher's ID (specified by user)
-- <i>gen</i>: F=female; M=male
-- <i>yrsP</i>: number of years since first peer-reviewed article
-- <i>genE</i>: <i>ε</i>-index relative to others of the same gender in the sample
-- <i>exp</i>: whether above or below expectation based on chosen index (default is 'e' = pooled index)
-- <i>m</i>: <i>m</i>-quotient = <i>h</i>-index ÷ yrs.publ
-- <i>h</i>: <i>h</i>-index
-- <i>genRnk</i>: rank from gender.eindex (1 = highest)
-- <i>debRnk</i>: gender-debiased rank (1 = highest)
-- <i>poolE</i>: <i>ε</i>-index generated from the entire sample (not gender-specific)
-- <i>poolRnk</i>: rank from pooled.eindex (1 = highest)
-- <i>eP</i>: scaled pooled.eindex (<i>ε</i>′-index)
-- <i>debEP</i>: scaled gender.eindex (gender <i>ε</i>′-index)
+- <i>person</i>: researcher's ID (specified by user)
+- <i>gender</i>: F=female; M=male
+- <i>yrs.publ</i>: number of years since first peer-reviewed article
+- <i>gender.eindex</i>: <i>ε</i>-index relative to others of the same gender in the sample
+- <i>expectation</i>: whether above or below expectation based on chosen index (default is 'e' = pooled index)
+- <i>m-quotient</i>: <i>h</i>-index ÷ yrs.publ
+- <i>h-index</i>: <i>h</i>-index
+- <i>debiased.e.prime.index</i>: scaled gender.eindex (gender <i>ε</i>′-index)
+- <i>gender.rank</i>: rank from gender.eindex (1 = highest)
+- <i>rnk.debiased</i>: gender-debiased rank (1 = highest)
+- <i>pooled.eindex</i>: <i>ε</i>-index generated from the entire sample (not gender-specific)
+- <i>e.prime.index</i>: scaled pooled.eindex (<i>ε</i>′-index)
+- <i>pooled.rnk</i>: rank from pooled.eindex (1 = highest)
 
 and
 
