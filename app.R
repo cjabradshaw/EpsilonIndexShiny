@@ -33,8 +33,10 @@ ui <- fluidPage(
            is deemed to be performing above or below expectation. This", tags$i(class="fab fa-r-project"), "Shiny App estimates the ε-index and its variants 
            using user-provided data files. This", tags$i(class="fab fa-github"), "Github ",
            tags$a(href = "https://github.com/cjabradshaw/EpsilonIndexShiny", "repository"),
-           "provides all the 'under-the-bonnet'",tags$i(class="fab fa-r-project"),"code for the app. The related paper (pre-print) is available",
-           tags$a(href="https://doi.org/10.22541/au.160373218.83526843/v1", "here", tags$i(class="far fa-file"),".")),
+           "provides all the 'under-the-bonnet'",tags$i(class="fab fa-r-project"),"code for the app. Read the related",
+           tags$a(href="https://doi.org/10.22541/au.160373218.83526843/v1", "paper", tags$i(class="far fa-file")),
+           " (pre-print) and/or", tags$a(href="https://conservationbytes.com/2020/11/09/the-ε-index-app-a-fairer-way-to-rank-researchers-with-citation-data/",
+                                        "blog post", tags$i(class="fas fa-blog"), ".")),
     tags$h4(style="font-family:Avenir", "Instructions"),
     tags$ol(tags$li(tags$p(style="font-family:Avenir", "Create a delimited text file of", tags$strong("exactly the same format"), "as the example file in this",
            tags$a(href="https://github.com/cjabradshaw/EpsilonIndex/blob/main/datasample.csv","repository", tags$i(class="far fa-file")), ",
