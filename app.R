@@ -319,7 +319,14 @@ server <- function(input, output, session) {
             legend.text = element_text(size=14),
             legend.title = element_text(size=16))
           
-          cMY <- ggplot(data=results, aes(x=log(yrsP), y=log(cM))) + 
+          massdat1 <- data.frame(results$ID, results$gen, log(results$yrsP), log(results$cM))
+          massdat2 <- na.omit(do.call(data.frame,lapply(massdat1,function(x) replace(x, is.infinite(x), NA))))
+          fit <- lm(massdat2[,4] ~ massdat2[,3])
+          massdat <- data.frame(massdat2, fit$fitted.values)
+          colnames(massdat) <- c("ID", "gen","lyrsP", "lcM", "pred")
+          
+          cMY <- ggplot(data=massdat, aes(x=lyrsP, y=lcM)) + 
+            geom_segment(aes(xend = lyrsP, yend = pred), linetype ="dashed", colour="dark grey") +
             geom_point(aes(color=factor(gen))) +
             scale_colour_manual(values = c("black", "red")) +
             geom_smooth(method=lm, se=F, linetype="dashed", color="red") +
@@ -361,7 +368,14 @@ server <- function(input, output, session) {
             legend.text = element_text(size=14),
             legend.title = element_text(size=16))
           
-          cMY <- ggplot(data=results, aes(x=log(yrsP), y=log(cM))) + 
+          massdat1 <- data.frame(results$ID, results$gen, log(results$yrsP), log(results$cM))
+          massdat2 <- na.omit(do.call(data.frame,lapply(massdat1,function(x) replace(x, is.infinite(x), NA))))
+          fit <- lm(massdat2[,4] ~ massdat2[,3])
+          massdat <- data.frame(massdat2, fit$fitted.values)
+          colnames(massdat) <- c("ID", "gen","lyrsP", "lcM", "pred")
+          
+          cMY <- ggplot(data=massdat, aes(x=lyrsP, y=lcM)) + 
+            geom_segment(aes(xend = lyrsP, yend = pred), linetype ="dashed", colour="dark grey") +
             geom_point(aes(color=factor(gen))) +
             scale_colour_manual(values = c("black", "red")) +
             geom_smooth(method=lm, se=F, linetype="dashed", color="red") +
@@ -372,7 +386,14 @@ server <- function(input, output, session) {
                              segment.color = 'grey50') +
             Ctheme
 
-          cMsY <- ggplot(data=results, aes(x=log(yrsP), y=log(cMs))) + 
+          massdat3 <- data.frame(results$ID, results$gen, log(results$yrsP), log(results$cMs))
+          massdat4 <- na.omit(do.call(data.frame,lapply(massdat3,function(x) replace(x, is.infinite(x), NA))))
+          fit2 <- lm(massdat4[,4] ~ massdat4[,3])
+          massdt <- data.frame(massdat4, fit2$fitted.values)
+          colnames(massdt) <- c("ID", "gen","lyrsP", "lcMs", "pred")
+          
+          cMsY <- ggplot(data=massdt, aes(x=lyrsP, y=lcMs)) + 
+            geom_segment(aes(xend = lyrsP, yend = pred), linetype ="dashed", colour="dark grey") +
             geom_point(aes(color=factor(gen))) +
             scale_colour_manual(values = c("black", "red")) +
             geom_smooth(method=lm, se=F, linetype="dashed", color="red") +
@@ -446,7 +467,7 @@ server <- function(input, output, session) {
             legend.text = element_text(size=14),
             legend.title = element_text(size=16))
           
-          mpoolE <- ggplot(data=results, aes(x=m, y=poolE)) + 
+          mpoolE <- ggplot(data=results, aes(x=m, y=poolE)) +
             geom_point(aes(color=factor(gen))) +
             geom_hline(yintercept=0, linetype=3, color="black", size=0.5) +
             scale_colour_manual(values = c("black", "red")) +
