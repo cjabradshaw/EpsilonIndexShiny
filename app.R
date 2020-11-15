@@ -7,9 +7,16 @@ rm(list = ls())
 
 # load libraries
 library(shiny)
+library(ggplot2)
+library(ggpubr)
 
 ## call functions
-source(file.path("./", "epsilonIndexFunc.R"), local=T)
+source(file.path("./functions/", "AICc.R"), local=T)
+source(file.path("./functions/", "deltaIC.R"), local=T)
+source(file.path("./functions/", "weightIC.R"), local=T)
+source(file.path("./functions/", "linregER.R"), local=T)
+source(file.path("./functions/", "setBackgroundColor.R"), local=T)
+source(file.path("./functions/", "epsilonIndexFunc.R"), local=T)
 
 ui <- fluidPage(
   
@@ -28,7 +35,7 @@ ui <- fluidPage(
     tags$h4(style="font-family:Avenir", "Preamble"),
     tags$p(style="font-family:Avenir", "Existing citation-based indices used to rank research performance do not permit a fair comparison 
            of researchers among career stages or disciplines, nor do they treat women and men equally. We designed 
-           the ε-index, which is simple to calculate, based on open-access data, corrects for disciplinary variation, 
+           the ε-index, which is simple to calculate, is based on open-access data, corrects for disciplinary variation, 
            can be adjusted for career breaks, and sets a sample-specific threshold above and below which a researcher 
            is deemed to be performing above or below expectation. This", tags$i(class="fab fa-r-project"), "Shiny App estimates the ε-index and its variants 
            using user-provided data files. This", tags$i(class="fab fa-github"), "Github ",
@@ -53,7 +60,7 @@ ui <- fluidPage(
            tags$li(tags$p(style="font-family:Avenir", "Click the", tags$i(class="fas fa-calculator"), tags$strong("calculate ε-index"), "button.")),
            tags$li(tags$p(style="font-family:Avenir", "Download the results table as a", tags$i(class="fas fa-file-csv"), "file by clicking the", tags$i(class="fas fa-download"),
            tags$strong("download"), "button.")))
-  ),
+  ), # end wellPanel
   
   tabsetPanel(id="tabs",
               tabPanel(value="tab1", title="user-collated citation data",
@@ -99,7 +106,42 @@ ui <- fluidPage(
                        ) # sidebarLayout
               ), # end tab1
               
-              tabPanel(value="tab2", title=tags$strong("input/output column descriptors"), style = "background: MintCream",
+              tabPanel(value="tab2", title=tags$strong("ε-index", tags$em("vs."), "m-quotient"), style = "background: MintCream",
+                       
+                         tags$br(),
+                         tags$p(style="font-family:Avenir", "The following plots show the relationship between the ε-index variants and the m-quotient:"),
+                         tags$ul(tags$li(tags$p(style="font-family:Avenir", tags$strong("A: ε-index", tags$em("versus"), "m-quotient"))),
+                                 tags$li(tags$p(style="font-family:Avenir", tags$strong("B: gender-debiased ε-index", tags$em("versus"), "m-quotient (visible only if
+                                                                                        'gender-split' activated")))
+                         ), # end ul
+                         
+                         mainPanel(
+                           tags$br(),
+                           tags$p(style="font-family:Avenir","In each panel below, the loess trend is indicated by the blue line."),
+                           tags$br(),
+                           plotOutput(height="800px", width="150%", "EmPlots")
+                         ) # end mainPanel
+              ), # end tab2
+
+              tabPanel(value="tab3", title=tags$strong("gender-debiased ε-index", tags$em("vs."), "ε-index"), style = "background: MintCream",
+                       
+                       tags$br(),
+                       tags$p(style="font-family:Avenir", "The following plots show the relationship between the gender-debiased ε-index and ε-inde
+                              x (if gender split selected) :"),
+                       htmlOutput('EREE'),
+                       tags$head(tags$style("#EREE{font-family:Avenir}"
+                       )),
+                       
+                       mainPanel(
+                         tags$br(),
+                         tags$p(style="font-family:Avenir","The linear trend is indicated by the dashed red line."),
+                         tags$br(),
+                         plotOutput(height="800px", width="150%", "EEPlots")
+                       ) # end mainPanel
+                       
+              ), # end tab3
+              
+              tabPanel(value="tab4", title=tags$strong("input/output column descriptors"), style = "background: MintCream",
                        tags$h2(style="font-family:Avenir", "Column descriptors"),
                        tags$a(href="https://flinders.edu.au/", tags$img(height = 100, src = "F_V_CMYK.png", style="float:right",title="Flinders University")),
                        tags$h3(style="font-family:Avenir", "User-collated citation data"),
@@ -136,10 +178,9 @@ ui <- fluidPage(
                        tags$p(style="font-family:Avenir", tags$strong("COLUMN 14"),": ", tags$em("ePddebRnk")," — rank from gender ε′-index"))),
                        
                        tags$br()
-                       
-              ), # end tab2
-              
-              tabPanel(value="tab3", title=tags$strong("index variants: explainer"), style = "background: MintCream",
+              ), # end tab4
+
+              tabPanel(value="tab5", title=tags$strong("index variants: explainer"), style = "background: MintCream",
                        tags$h2(style="font-family:Avenir", "Description of the four variants of the ε-index"),
                        tags$a(href="https://flinders.edu.au/", tags$img(height = 100, src = "F_V_CMYK.png", style="float:right",title="Flinders University")),
                        tags$ol(tags$li(tags$u(tags$p(style="font-family:Avenir", tags$strong("ε-index"), "(COLUMN", tags$em("poolE"),") — the base index not taking gender into account, or normalisation")),
@@ -161,13 +202,13 @@ ui <- fluidPage(
                                tags$br(),
                                tags$a(href="https://github.com/cjabradshaw/EpsilonIndexShiny/blob/main/LICENSE", tags$img(height = 50, src = "GNU GPL3.png", style="float:right", title="GNU General Public Licence v3.0")),
                                tags$li(tags$u(tags$p(style="font-family:Avenir", tags$strong("gender-debiased ε′-index"), "(COLUMN", tags$em("debEP"),") — the normalised index accounting for gender bias")),
-                                       tags$p(style="font-family:Avenir","Following the same approach as above, but normalising for each gender separately"),),
+                                       tags$p(style="font-family:Avenir","Following the same approach as above, but normalising for each gender separately"),)
                                ),
                        tags$br(),
                        tags$p(style="font-family:Avenir","For more information, read the original",tags$a(href="https://doi.org/10.22541/au.160373218.83526843/v1", "paper.")),
                        tags$br()
                        
-              ) # end tab3
+              ) # end tab5
   ) # end tabsetPanel
   
 ) # close fluidPage
@@ -226,6 +267,106 @@ server <- function(input, output, session) {
         }
       )
     } # end if for tab1
+    
+    if(input$tabs == "tab2"){
+      
+        output$EmPlots <- renderPlot({
+          input$EmPlots
+          
+          Ctheme = theme(
+            axis.title.x = element_text(size = 16),
+            axis.text.x = element_text(size = 14),
+            axis.title.y = element_text(size = 16),
+            axis.text.y = element_text(size = 14),
+            legend.text = element_text(size=14),
+            legend.title = element_text(size=16))
+          
+          mpoolE <- ggplot(data=results, aes(x=m, y=poolE)) + 
+            geom_point(aes(color=factor(gen))) +
+            geom_hline(yintercept=0, linetype=3, color="black", size=0.5) +
+            scale_colour_manual(values = c("black", "red")) +
+            geom_smooth() +
+            labs(x=NULL, y="ε-index", color="gender") +
+            Ctheme
+          
+          mgenE <- ggplot(data=results, aes(x=m, y=genE)) + 
+            geom_point(aes(color=factor(gen))) +
+            geom_hline(yintercept=0, linetype=3, color="black", size=0.5) +
+            scale_colour_manual(values = c("black", "red")) +
+            geom_smooth() +
+            labs(x="m-quotient", y="gender-debiased ε-index", color="gender") +
+            Ctheme
+          
+          ggarrange(mpoolE, mgenE,
+                    labels=c("A", "B"),
+                    ncol=1, nrow=2)
+          })
+      
+      if (input$bygender == "no") {
+
+        output$EmPlots <- renderPlot({
+          input$EmPlots
+          
+          Ctheme = theme(
+            axis.title.x = element_text(size = 16),
+            axis.text.x = element_text(size = 14),
+            axis.title.y = element_text(size = 16),
+            axis.text.y = element_text(size = 14),
+            legend.text = element_text(size=14),
+            legend.title = element_text(size=16))
+          
+          mpoolE <- ggplot(data=results, aes(x=m, y=poolE)) + 
+            geom_point(aes(color=factor(gen))) +
+            geom_hline(yintercept=0, linetype=3, color="black", size=0.5) +
+            scale_colour_manual(values = c("black", "red")) +
+            geom_smooth() +
+            labs(x='m-quotient', y="ε-index", color="gender") +
+            Ctheme
+          
+          ggarrange(mpoolE,
+                    labels=c("A"),
+                    ncol=1, nrow=1)
+        })
+      } # end if
+      
+    } # end if for tab2
+
+    if(input$tabs == "tab3"){
+      
+      if (input$bygender == "yes") {
+        
+        output$EREE <- renderText({
+          paste("evidence ratio = ", round(linregER(results$poolE, results$genE)[1], 3),";",
+                " R<sup>2</sup>",  " = ",round(linregER(results$poolE, results$genE)[2], 3),sep="")
+        })
+        
+        output$EEPlots <- renderPlot({
+          input$EEPlots
+          
+          Ctheme = theme(
+            axis.title.x = element_text(size = 16),
+            axis.text.x = element_text(size = 14),
+            axis.title.y = element_text(size = 16),
+            axis.text.y = element_text(size = 14),
+            legend.text = element_text(size=14),
+            legend.title = element_text(size=16))
+          
+          EE <- ggplot(data=results, aes(x=poolE, y=genE)) + 
+            geom_point(aes(color=factor(gen))) +
+            geom_hline(yintercept=0, linetype=2, color="black", size=0.5) +
+            geom_vline(xintercept=0, linetype=2, color="black", size=0.5) +
+            scale_colour_manual(values = c("black", "red")) +
+            geom_smooth(method=lm, se=F, linetype="dashed", color="red") +
+            labs(x="ε-index", y="gender-debiased ε-index", color="gender") +
+            Ctheme
+          
+          ggarrange(EE,
+                    labels=NULL,
+                    ncol=1, nrow=1)
+        })
+      } # end if
+      
+    } # end if for tab3
     
   }) # end tab Events
   
