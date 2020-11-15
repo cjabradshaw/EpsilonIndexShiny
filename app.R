@@ -9,6 +9,7 @@ rm(list = ls())
 library(shiny)
 library(ggplot2)
 library(ggpubr)
+library(ggrepel)
 
 ## call functions
 source(file.path("./functions/", "AICc.R"), local=T)
@@ -287,16 +288,24 @@ server <- function(input, output, session) {
             scale_colour_manual(values = c("black", "red")) +
             geom_smooth() +
             labs(x=NULL, y="ε-index", color="gender") +
+            geom_label_repel(aes(label = ID),
+                             box.padding   = 0.35, 
+                             point.padding = 0.5,
+                             segment.color = 'grey50') +
             Ctheme
-          
+            
           mgenE <- ggplot(data=results, aes(x=m, y=genE)) + 
             geom_point(aes(color=factor(gen))) +
             geom_hline(yintercept=0, linetype=3, color="black", size=0.5) +
             scale_colour_manual(values = c("black", "red")) +
             geom_smooth() +
             labs(x="m-quotient", y="gender-debiased ε-index", color="gender") +
+            geom_label_repel(aes(label = ID),
+                             box.padding   = 0.35, 
+                             point.padding = 0.5,
+                             segment.color = 'grey50') +
             Ctheme
-          
+            
           ggarrange(mpoolE, mgenE,
                     labels=c("A", "B"),
                     ncol=1, nrow=2)
@@ -321,8 +330,12 @@ server <- function(input, output, session) {
             scale_colour_manual(values = c("black", "red")) +
             geom_smooth() +
             labs(x='m-quotient', y="ε-index", color="gender") +
+            geom_label_repel(aes(label = ID),
+                             box.padding   = 0.35, 
+                             point.padding = 0.5,
+                             segment.color = 'grey50') +
             Ctheme
-          
+            
           ggarrange(mpoolE,
                     labels=c("A"),
                     ncol=1, nrow=1)
@@ -358,8 +371,12 @@ server <- function(input, output, session) {
             scale_colour_manual(values = c("black", "red")) +
             geom_smooth(method=lm, se=F, linetype="dashed", color="red") +
             labs(x="ε-index", y="gender-debiased ε-index", color="gender") +
+            geom_label_repel(aes(label = ID),
+                             box.padding   = 0.35, 
+                             point.padding = 0.5,
+                             segment.color = 'grey50') +
             Ctheme
-          
+            
           ggarrange(EE,
                     labels=NULL,
                     ncol=1, nrow=1)
