@@ -157,7 +157,7 @@ ui <- fluidPage(
                        
                        mainPanel(
                          tags$br(),
-                         tags$p(style="font-family:Avenir","The 1:1", tags$em("x"), "~", tags$em("y"), "relationship is indicated by the black dashed line."),
+                         tags$p(style="font-family:Avenir","The 1:1", tags$em("y"), "~", tags$em("x"), "relationship is indicated by the black dashed line."),
                          tags$br(),
                          plotOutput(height="800px", width="150%", "EEPlots")
                        ) # end mainPanel
