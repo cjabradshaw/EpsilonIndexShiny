@@ -152,15 +152,12 @@ ui <- fluidPage(
               tabPanel(value="tab4", title=tags$strong("gender-debiased ε-index", tags$em("vs."), "ε-index"), style = "background: MintCream",
                        
                        tags$br(),
-                       tags$p(style="font-family:Avenir", "The following plots show the relationship between the gender-debiased ε-index and ε-index
-                               (if gender split selected):"),
+                       tags$p(style="font-family:Avenir", "The following plot shows the relationship between the gender-debiased ε-index rank and the ε-index
+                               rank (if gender split selected):"),
                        
                        mainPanel(
-                         htmlOutput('EREE'),
-                         tags$head(tags$style("#EREE{font-family:Avenir}"
-                         )),
                          tags$br(),
-                         tags$p(style="font-family:Avenir","The linear trend is indicated by the dashed red line."),
+                         tags$p(style="font-family:Avenir","The 1:1", tags$em("x"), "~", tags$em("y"), "relationship is indicated by the black dashed line."),
                          tags$br(),
                          plotOutput(height="800px", width="150%", "EEPlots")
                        ) # end mainPanel
@@ -302,7 +299,9 @@ server <- function(input, output, session) {
         output$ERMY <- renderText({
           massdat1 <- data.frame(log(results$yrsP), log(results$cM))
           massdat <- na.omit(do.call(data.frame,lapply(massdat1,function(x) replace(x, is.infinite(x), NA))))
-          paste("A. evidence ratio = ", round(linregER(massdat[,1], massdat[,2])[1], 3),";",
+          ER <- linregER(massdat[,1], massdat[,2])[1]
+          ERf <- ifelse(ER > 100, format(ER, format="e", digits=3), round(ER, 3))
+          paste("A. evidence ratio = ", ERf,";",
                 " R<sup>2</sup>",  " = ",round(linregER(massdat[,1], massdat[,2])[2], 3),sep="")
         })
         
@@ -328,7 +327,7 @@ server <- function(input, output, session) {
             geom_point(aes(color=factor(gen))) +
             scale_colour_manual(values = c("black", "red")) +
             geom_smooth(method=lm, se=F, linetype="dashed", color="red") +
-            labs(x="years publishing", y="citation mass", color="gender") +
+            labs(x="log years publishing", y="log citation mass", color="gender") +
             geom_label_repel(aes(label = ID),
                              box.padding   = 0.35, 
                              point.padding = 0.5,
@@ -345,13 +344,17 @@ server <- function(input, output, session) {
         output$ERMY <- renderText({
           massdat1 <- data.frame(log(results$yrsP), log(results$cM))
           massdat <- na.omit(do.call(data.frame,lapply(massdat1,function(x) replace(x, is.infinite(x), NA))))
-          paste("A. evidence ratio = ", round(linregER(massdat[,1], massdat[,2])[1], 3),";",
+          ER <- linregER(massdat[,1], massdat[,2])[1]
+          ERf <- ifelse(ER > 100, format(ER, format="e", digits=3), round(ER, 3))
+          paste("A. evidence ratio = ", ERf,";",
                 " R<sup>2</sup>",  " = ",round(linregER(massdat[,1], massdat[,2])[2], 3),sep="")
         })
         output$ERMsY <- renderText({
           massdat1 <- data.frame(log(results$yrsP), log(results$cMs))
           massdat <- na.omit(do.call(data.frame,lapply(massdat1,function(x) replace(x, is.infinite(x), NA))))
-          paste("B. evidence ratio = ", round(linregER(massdat[,1], massdat[,2])[1], 3),";",
+          ER <- linregER(massdat[,1], massdat[,2])[1]
+          ERf <- ifelse(ER > 100, format(ER, format="e", digits=3), round(ER, 3))
+          paste("B. evidence ratio = ", ERf,";",
                 " R<sup>2</sup>",  " = ",round(linregER(massdat[,1], massdat[,2])[2], 3),sep="")
         })
         
@@ -377,7 +380,7 @@ server <- function(input, output, session) {
             geom_point(aes(color=factor(gen))) +
             scale_colour_manual(values = c("black", "red")) +
             geom_smooth(method=lm, se=F, linetype="dashed", color="red") +
-            labs(x=NULL, y="citation mass", color="gender") +
+            labs(x=NULL, y="log citation mass", color="gender") +
             geom_label_repel(aes(label = ID),
                              box.padding   = 0.35, 
                              point.padding = 0.5,
@@ -395,7 +398,7 @@ server <- function(input, output, session) {
             geom_point(aes(color=factor(gen))) +
             scale_colour_manual(values = c("black", "red")) +
             geom_smooth(method=lm, se=F, linetype="dashed", color="red") +
-            labs(x="years publishing", y="debiased citation mass", color="gender") +
+            labs(x="log years publishing", y="log gender-debiased citation mass", color="gender") +
             geom_label_repel(aes(label = ID),
                              box.padding   = 0.35, 
                              point.padding = 0.5,
@@ -489,11 +492,6 @@ server <- function(input, output, session) {
       
       if (input$bygender == "yes") {
         
-        output$EREE <- renderText({
-          paste("evidence ratio = ", round(linregER(results$poolE, results$genE)[1], 3),";",
-                " R<sup>2</sup>",  " = ",round(linregER(results$poolE, results$genE)[2], 3),sep="")
-        })
-        
         output$EEPlots <- renderPlot({
           input$EEPlots
           
@@ -505,13 +503,11 @@ server <- function(input, output, session) {
             legend.text = element_text(size=14),
             legend.title = element_text(size=16))
           
-          EE <- ggplot(data=results, aes(x=poolE, y=genE)) + 
+          EE <- ggplot(data=results, aes(x=poolRnk, y=debRnk)) + 
             geom_point(aes(color=factor(gen))) +
-            geom_hline(yintercept=0, linetype=2, color="black", size=0.5) +
-            geom_vline(xintercept=0, linetype=2, color="black", size=0.5) +
             scale_colour_manual(values = c("black", "red")) +
-            geom_smooth(method=lm, se=F, linetype="dashed", color="red") +
-            labs(x="ε-index", y="gender-debiased ε-index", color="gender") +
+            geom_abline(slope=1, intercept=0, linetype="dashed", color="black") +
+            labs(x="ε-index rank", y="gender-debiased ε-index rank", color="gender") +
             geom_label_repel(aes(label = ID),
                              box.padding   = 0.35, 
                              point.padding = 0.5,
