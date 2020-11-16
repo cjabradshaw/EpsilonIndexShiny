@@ -56,7 +56,7 @@ The output .csv file includes the following columns:
 - <i>debiased.e.prime.index</i>: scaled gender.eindex (gender <i>ε</i>′-index) (not included if you select no gender split)
 - <i>gender.rank</i>: rank from gender.eindex (1 = highest) (not included if you select no gender split)
 - <i>rnk.debiased</i>: gender-debiased rank (1 = highest) (not included if you select no gender split)
-- <i>cM</i> — citation mass (COLUMN 4 if you select no gender split)
+- <i>cM</i>: citation mass (COLUMN 4 if you select no gender split)
 - <i>pooled.eindex</i>: <i>ε</i>-index generated from the entire sample (not gender-specific)
 - <i>e.prime.index</i>: scaled pooled.eindex (<i>ε</i>′-index)
 - <i>pooled.rnk</i>: rank from pooled.eindex (1 = highest)
