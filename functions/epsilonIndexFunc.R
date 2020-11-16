@@ -132,7 +132,7 @@ epsilonIndexFunc <- function(datsamp, bygender='no', sortindex='e') {
     datFM.sort1 <- datFM[order(datFM[,5],decreasing=T), ]
     debRnk <- seq(1,length(datFM.sort1[,1]),1)
     datFM.sort <- data.frame(datFM.sort1,debRnk)
-    colnames(datFM.sort)[1:10] <- colnames(datFM)
+    #colnames(datFM.sort)[1:10] <- colnames(datFM)
     colnames(datFM.sort)[5] <- "genE"
     datFM.sort[,5] <- round(datFM.sort[,5],4)
     
@@ -144,22 +144,22 @@ epsilonIndexFunc <- function(datsamp, bygender='no', sortindex='e') {
     datFM.mrg[,14] <- round(as.numeric(datFM.mrg[,14]), 4)
     datFM.mrg[,12] <- round(datFM.mrg[,12], 4)
     colnames(datFM.mrg)[15] <- "poolRnk"
-    full.out1 <- datFM.mrg[order(datFM.mrg[,10],decreasing=F), ]  
+    full.out1 <- datFM.mrg[order(datFM.mrg[,11],decreasing=F), ]  
     
     # sort on desired metric & recalculate expectation based on sort metric
     # 'e' = pooled; 'ep' = normalised; 'd' = gender-debiased; 'dp' = normalised gender-debiased 
     if (sortindex == 'd') {
-      sortout <- full.out1[order(full.out1[,11],decreasing=F), ]}
+      sortout <- full.out1[order(full.out1[,11],decreasing=F), 1:15]}
     if (sortindex == 'e') {
-      sortout <- full.out1[order(full.out1[,13],decreasing=T), ]
+      sortout <- full.out1[order(full.out1[,15],decreasing=F), 1:15]
       sortout[,6] <- as.character(ifelse(sortout[,13] > 0, 'above', 'below'))}
     if (sortindex == 'ep') {
-      sortout1 <- full.out1[order(full.out1[,14],decreasing=T), ]
+      sortout1 <- full.out1[order(full.out1[,14],decreasing=T), 1:15]
       sortout1[,6] <- ifelse(sortout1[,14] > 0, 'above', 'below')
       ePRnk <- seq(1,dim(sortout1)[1], by=1)
       sortout <- data.frame(sortout1,ePRnk)}
     if (sortindex == 'dp') {
-      sortout1 <- full.out1[order(full.out1[,9],decreasing=T), ]
+      sortout1 <- full.out1[order(full.out1[,9],decreasing=T), 1:15]
       sortout1[,6] <- ifelse(sortout1[,9] > 0, 'above', 'below')
       ePdebRnk <- seq(1,dim(sortout1)[1], by=1)
       sortout <- data.frame(sortout1,ePdebRnk)}
