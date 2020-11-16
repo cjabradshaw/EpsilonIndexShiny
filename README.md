@@ -48,13 +48,15 @@ The output .csv file includes the following columns:
 - <i>person</i>: researcher's ID (specified by user)
 - <i>gender</i>: F=female; M=male
 - <i>yrs.publ</i>: number of years since first peer-reviewed article
-- <i>gender.eindex</i>: <i>ε</i>-index relative to others of the same gender in the sample
+- <i>cM</i>: citation mass (or, <i>cMs</i> = normalised citation mass if you select gender split)
+- <i>gender.eindex</i>: <i>ε</i>-index relative to others of the same gender in the sample (not included if you select no gender split)
 - <i>expectation</i>: whether above or below expectation based on chosen index (default is 'e' = pooled index)
 - <i>m-quotient</i>: <i>h</i>-index ÷ yrs.publ
 - <i>h-index</i>: <i>h</i>-index
-- <i>debiased.e.prime.index</i>: scaled gender.eindex (gender <i>ε</i>′-index)
-- <i>gender.rank</i>: rank from gender.eindex (1 = highest)
-- <i>rnk.debiased</i>: gender-debiased rank (1 = highest)
+- <i>debiased.e.prime.index</i>: scaled gender.eindex (gender <i>ε</i>′-index) (not included if you select no gender split)
+- <i>gender.rank</i>: rank from gender.eindex (1 = highest) (not included if you select no gender split)
+- <i>rnk.debiased</i>: gender-debiased rank (1 = highest) (not included if you select no gender split)
+- <i>cM</i> — citation mass (COLUMN 4 if you select no gender split)
 - <i>pooled.eindex</i>: <i>ε</i>-index generated from the entire sample (not gender-specific)
 - <i>e.prime.index</i>: scaled pooled.eindex (<i>ε</i>′-index)
 - <i>pooled.rnk</i>: rank from pooled.eindex (1 = highest)
