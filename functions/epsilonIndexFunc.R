@@ -63,7 +63,7 @@ epsilonIndexFunc <- function(datsamp, bygender='no', sortindex='e') {
   ## calculate expectation relative to sample
   expectation <- as.character(ifelse(resid(fit.yAlin) > 0, "above", "below"))
   dat.out <- data.frame(datsamp[,1], datsamp[,2], ye, Alin, resid(fit.yAlin), resid(fit.yAlinP), expectation, mi, datsamp[,4])
-  dat.sort1 <- dat.out[order(dat.out[,4],decreasing=T),]
+  dat.sort1 <- dat.out[order(dat.out[,5],decreasing=T),]
   Rnk <- seq(1,length(datsamp[,1]),1)
   dat.sort <- data.frame(dat.sort1,Rnk)
   colnames(dat.sort) <- c("ID","gen","yrsP","cM","e","eP","exp","m","h","Rnk")
