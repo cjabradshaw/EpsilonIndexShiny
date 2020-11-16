@@ -90,7 +90,7 @@ ui <- fluidPage(
                          ),
                          
                          # open main panel
-                         mainPanel(style = "background: GhostWhite",
+                         mainPanel(style = "background: MintCream",
                            
                            fluidRow(
                              tags$div(id = "firstOutput", 
@@ -280,8 +280,6 @@ server <- function(input, output, session) {
             output$etable <- renderDataTable({
               if(is.null(datin())){return ()}
               results <<- epsilonIndexFunc(datsamp=(datin()), bygender=input$bygender, sortindex=sortInd$y)
-              Fresults <<- subset(results, gen=="F")
-              Mresults <<- subset(results, gen=="M")
             })))
       }) # end observeEvent
       
