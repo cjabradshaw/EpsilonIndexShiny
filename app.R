@@ -250,13 +250,13 @@ server <- function(input, output, session) {
         if(is.null(file_to_read)){
           return()
         }
-        read.table(file_to_read$datapath, sep=input$sep, header=input$header1)
+        read.table(file_to_read$datapath, sep=input$sep, header=input$header1, quote=NULL)
       }) # end output table1
       
       datin <- reactive({
         fileinp <- input$file1
         if(is.null(fileinp)){return()}
-        inpdat <- data.frame(read.table(fileinp$datapath, sep=input$sep, header = input$header1))
+        inpdat <- data.frame(read.table(fileinp$datapath, sep=input$sep, header = input$header1, quote=NULL))
         return(inpdat)
       }) # end datin
       
