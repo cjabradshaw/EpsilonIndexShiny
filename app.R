@@ -7,6 +7,7 @@ rm(list = ls())
 
 # load libraries
 library(shiny)
+library(shinybusy)
 library(ggplot2)
 library(ggpubr)
 library(ggrepel)
@@ -95,11 +96,14 @@ ui <- fluidPage(
                            fluidRow(
                              tags$div(id = "firstOutput", 
                                       h3("input data"),
+                                      add_busy_spinner(spin="fading-circle", color="#17ca3a", timeout=500, position="bottom-right", height = 250, width = 250),
                                       dataTableOutput("table1")) 
                            ),
                            
                            fluidRow(
-                             tags$div(id = "placeholder") # the dynamic UI will be inserted relative to this placeholder
+                             tags$div(id = "placeholder"), # the dynamic UI will be inserted relative to this placeholder
+                             add_busy_spinner(spin="fading-circle", color="#17ca3a", timeout=500, position="bottom-right", height = 250, width = 250),
+                             
                            ),
                            
                          ) # close mainPanel
@@ -115,6 +119,7 @@ ui <- fluidPage(
                        
                        mainPanel(
                          tags$br(),
+                         add_busy_spinner(spin="fading-circle", color="#17ca3a", timeout=500, position="bottom-right", height = 250, width = 250),
                          plotOutput(height="1000px","rankPlots")
                        ) # end mainPanel
                        
@@ -140,6 +145,7 @@ ui <- fluidPage(
                          tags$br(),
                          tags$p(style="font-family:Avenir","The linear trend is indicated by the dashed red line."),
                          tags$br(),
+                         add_busy_spinner(spin="fading-circle", color="#17ca3a", timeout=500, position="bottom-right", height = 250, width = 250),
                          plotOutput(height="800px", width="150%", "cMYPlots")
                        ) # end mainPanel
                        
@@ -158,6 +164,7 @@ ui <- fluidPage(
                            tags$br(),
                            tags$p(style="font-family:Avenir","In each panel below, the loess trend is indicated by the blue line."),
                            tags$br(),
+                           add_busy_spinner(spin="fading-circle", color="#17ca3a", timeout=500, position="bottom-right", height = 250, width = 250),
                            plotOutput(height="800px", width="150%", "EmPlots")
                          ) # end mainPanel 
               ), # end tab4
@@ -172,6 +179,7 @@ ui <- fluidPage(
                          tags$br(),
                          tags$p(style="font-family:Avenir","The 1:1", tags$em("y"), "~", tags$em("x"), "relationship is indicated by the black dashed line."),
                          tags$br(),
+                         add_busy_spinner(spin="fading-circle", color="#17ca3a", timeout=500, position="bottom-right", height = 250, width = 250),
                          plotOutput(height="800px", width="150%", "EEPlots")
                        ) # end mainPanel
                        
@@ -254,7 +262,7 @@ ui <- fluidPage(
 
 server <- function(input, output, session) {
   
-  observeEvent(input$tabs, {
+  observeEvent(input$file1, {
     
     if(input$tabs == "tab1"){
       
@@ -305,6 +313,10 @@ server <- function(input, output, session) {
         }
       )
     } # end if for tab1
+    
+  }) # end Events
+
+  observeEvent(input$tabs, {
     
     if(input$tabs == "tab2"){
       
@@ -632,7 +644,7 @@ server <- function(input, output, session) {
       
     } # end if for tab5
     
-  }) # end tab Events
+  }) # end Events
   
   session$onSessionEnded(stopApp)
   
