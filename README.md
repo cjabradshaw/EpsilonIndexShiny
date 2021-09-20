@@ -1,6 +1,6 @@
 # Shiny app for calculating the ε-index from a user-supplied text file of citation data
 
-<img align="right" src="epsilonindex logo.png" alt="thylacine" width="200" style="margin-top: 20px">
+<img align="right" src="epsilonIndex logo.png" alt="ε-index" width="200" style="margin-top: 20px">
 
 Prof Corey J. A. Bradshaw <br>
 <a href="http://globalecologyflinders.com" target="_blank">Global Ecology</a>, <a href="http://flinders.edu.au" target="_blank">Flinders University</a>, Adelaide, Australia <br>
