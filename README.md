@@ -27,7 +27,7 @@ This app accompanies the article:
  - <strong>COLUMN 3</strong>: <i>i10</i> — researcher's i10 index (# papers with ≥ 10 citations); <strong>must be > 0</strong>
  - <strong>COLUMN 4</strong>: <i>h</i> — researcher's <i>h</i>-index
  - <strong>COLUMN 5</strong>: <i>maxcit</i> — number of citations of researcher's most cited peer-reviewed paper
- - <strong>COLUMN 6</strong>: <i>firstyrpub</i> — the year of the researcher's first published peer-reviewed paper
+ - <strong>COLUMN 6</strong>: <i>firstyrpub</i> — the year of the researcher's first published peer-reviewed paper (for instructions on how to adjust this value for career breaks, see item #4 in the 'index variants: explainer' tab)
 
 2. Access the app at <a target="_blank" href="https://cjabradshaw.shinyapps.io/epsilonIndex/">cjabradshaw.shinyapps.io/epsilonIndex</a>.
   
