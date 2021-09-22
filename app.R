@@ -38,13 +38,14 @@ ui <- fluidPage(
     tags$p(style="font-family:Avenir", "Existing citation-based indices used to rank research performance do not permit a fair comparison 
            of researchers among career stages or disciplines, nor do they treat women and men equally. We designed 
            the ε-index, which is simple to calculate, is based on open-access data, corrects for disciplinary variation, 
-           can be adjusted for career breaks, and sets a sample-specific threshold above and below which a researcher 
+           can be adjusted for career breaks (see item #4 in the 'index variants: explainer' tab), and sets a sample-specific threshold above and below which a researcher 
            is deemed to be performing above or below expectation. This", tags$i(class="fab fa-r-project"), "Shiny App estimates the ε-index and its variants 
-           using user-provided data files. This", tags$i(class="fab fa-github"), "Github ",
+           using user-provided data files. Note that a file containing multiple individuals (> 5 is best) is required for the ε-index
+           to be calculated — it only makes sense as a relative index (see more instructions for comparing among disciplines in the 'index variants: explainer' tab). This", tags$i(class="fab fa-github"), "Github ",
            tags$a(href = "https://github.com/cjabradshaw/EpsilonIndexShiny", "repository"),
            "provides all the 'under-the-bonnet'",tags$i(class="fab fa-r-project"),"code for the app. Read the related",
-           tags$a(href="https://doi.org/10.22541/au.160373218.83526843/v1", "paper", tags$i(class="far fa-file")),
-           " (pre-print) and/or", tags$a(href="https://conservationbytes.com/2020/11/09/the-ε-index-app-a-fairer-way-to-rank-researchers-with-citation-data/",
+           tags$a(href="http://doi.org/10.1371/journal.pone.0257141", "paper", tags$i(class="far fa-file")),
+           " and/or", tags$a(href="https://conservationbytes.com/2020/11/09/the-ε-index-app-a-fairer-way-to-rank-researchers-with-citation-data/",
                                         "blog post", tags$i(class="fas fa-blog"), ".")),
     tags$h4(style="font-family:Avenir", "Instructions"),
     tags$ol(tags$li(tags$p(style="font-family:Avenir", "Create a delimited text file of", tags$strong("exactly the same format"), "as the example file in this",
@@ -196,7 +197,7 @@ ui <- fluidPage(
                        tags$a(href="https://epicaustralia.org.au/", tags$img(height = 150, src = "CABAHlogo.png",
                                                                              style="float:right", title="ARC Centre of Excellence for Australian Biodiversity and Heritage")),
                        tags$li(tags$p(style="font-family:Avenir", tags$strong("COLUMN 5"),": ", tags$em("maxcit")," — number of citations of researcher's most cited peer-reviewed paper")),
-                       tags$li(tags$p(style="font-family:Avenir", tags$strong("COLUMN 6"),": ", tags$em("firstyrpub")," — the year of the researcher's first published peer-reviewed paper"))),
+                       tags$li(tags$p(style="font-family:Avenir", tags$strong("COLUMN 6"),": ", tags$em("firstyrpub")," — the year of the researcher's first published peer-reviewed paper (for instructions on how to adjust this value for career breaks, see item #4 in the 'index variants: explainer' tab)"))),
                        
                        tags$h3(style="font-family:Avenir", "ε-index output"),
                        tags$ol(tags$li(tags$p(style="font-family:Avenir", tags$strong("COLUMN 1"),": ", tags$em("ID")," — researcher ID")),
@@ -244,14 +245,19 @@ ui <- fluidPage(
                                tags$li(tags$u(tags$p(style="font-family:Avenir", tags$strong("ε′-index"), "(COLUMN", tags$em("eP"),") — the normalised base index")),
                                        tags$p(style="font-family:Avenir","The approach to calculate the ε-index is the same, except the citation mass (", tags$em("A"),tags$sub("rel"), ") is normalised relative to the sample:"),
                                        tags$img(height = 50, src = "normaliseEq.png", style="vertical-align:middle"),
-                                       tags$br()),
+                                       tags$br(),
+                                       tags$br(),
+                                       tags$p(style="font-family:Avenir", "To compare researchers from different disciplines, first take a single discipline sample of researchers, calculate their discipline-specific ε′-indices, and then compare the ε′-indices to those from another sample from another discipline. So, say you have 20 researchers from DISCIPLINE A, and 20 from DISCIPLINE B. Run each discipline sample separately, and then pool the two sets of ε′-indices to compare researchers on the same scale. The app will not automatically order and plot the combined ε′ scores (you will have to do this outside the app)."),),
                                tags$br(),
                                tags$a(href="https://github.com/cjabradshaw/EpsilonIndexShiny/blob/main/LICENSE", tags$img(height = 50, src = "GNU GPL3.png", style="float:right", title="GNU General Public Licence v3.0")),
                                tags$li(tags$u(tags$p(style="font-family:Avenir", tags$strong("gender-debiased ε′-index"), "(COLUMN", tags$em("debEP"),") — the normalised index accounting for gender bias")),
-                                       tags$p(style="font-family:Avenir","Following the same approach as above, but normalising for each gender separately"),)
+                                       tags$p(style="font-family:Avenir","Following the same approach as above, but normalising for each gender separately."),
+                                       tags$p(style="font-family:Avenir","N.B. To adjust for career breaks, it is necessary to adjust the", tags$em("firstyrpub"), " value in the uploaded text file for the researcher(s) in question. The following example explains how this can be done:"),
+                                       tags$p(style="font-family:Avenir","Let’s say a researcher published her 1", tags$sup("st"), " paper in 2005. From then until now, if she were on a 0.6 full-time equivalent (FTE) for 3 years, 0.2 FTE for 2 years, and had 18 months maternity leave, then the effective ‘start’ year would be:"),
+                                       tags$p(style="font-family:Avenir","2005 + (3 - 1.8) + (2 - 0.4) + 1.5 ≅ 2009 (i.e., rounded to nearest calendar year).")),                               
                                ),
                        tags$br(),
-                       tags$p(style="font-family:Avenir","For more information, read the original",tags$a(href="https://doi.org/10.22541/au.160373218.83526843/v1", "paper.")),
+                       tags$p(style="font-family:Avenir","For more information, read the original",tags$a(href="http://doi.org/10.1371/journal.pone.0257141", "paper.")),
                        tags$br()
                        
               ) # end tab7
