@@ -188,7 +188,7 @@ ui <- fluidPage(
               
               tabPanel(value="tab6", title=tags$strong("input/output column descriptors"), style = "background: MintCream",
                        tags$h2(style="font-family:Avenir", "Column descriptors"),
-                       tags$a(href="https://flinders.edu.au/", tags$img(height = 100, src = "F_V_CMYK.png", style="float:right",title="Flinders University")),
+                       tags$a(href="https://flinders.edu.au/", tags$img(height = 140, src = "F_V_CMYK.png", style="float:right",title="Flinders University")),
                        tags$h3(style="font-family:Avenir", "User-collated citation data"),
                        tags$ol(tags$li(tags$p(style="font-family:Avenir", tags$strong("COLUMN 1"),": ", tags$em("personID")," — any character identification of an individual researcher (can be a name)")),
                                tags$li(tags$p(style="font-family:Avenir", tags$strong("COLUMN 2"),": ", tags$em("gender")," — researcher's gender (F or M)")),
@@ -229,7 +229,7 @@ ui <- fluidPage(
 
               tabPanel(value="tab7", title=tags$strong("index variants: explainer"), style = "background: MintCream",
                        tags$h2(style="font-family:Avenir", "Description of the four variants of the ε-index"),
-                       tags$a(href="https://flinders.edu.au/", tags$img(height = 100, src = "F_V_CMYK.png", style="float:right",title="Flinders University")),
+                       tags$a(href="https://flinders.edu.au/", tags$img(height = 140, src = "F_V_CMYK.png", style="float:right",title="Flinders University")),
                        tags$ol(tags$li(tags$u(tags$p(style="font-family:Avenir", tags$strong("ε-index"), "(COLUMN", tags$em("poolE"),") — the base index not taking gender into account, or normalisation")),
                                        tags$p(style="font-family:Avenir", "The base ε-index is the residual of the linear relationship between a researcher's citation mass (",tags$em("A"),
                                               tags$sub("rel"), ") and the log", tags$sub(tags$em("e")), "of the number of years publishing (", tags$em("t"), ")."),
